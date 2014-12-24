@@ -68,8 +68,8 @@ class query:
                         "qtime":response.qtime, "track_id":response.TRID, "total_time":response.total_time})
 
 
-application = web.application(urls, globals())#.wsgifunc()
+app = web.application(urls, globals())#.wsgifunc()
         
-if __name__ == "__main__":
-    application.run()
+if __name__ == "__main__": app.run()
 
+application = app.wsgifunc()
