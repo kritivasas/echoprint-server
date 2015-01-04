@@ -23,7 +23,7 @@ try:
 except ImportError:
     import simplejson as json
 
-_fp_solr = solr.SolrConnectionPool("http://localhost:8502/solr/fp")
+_fp_solr = solr.SolrConnectionPool("http://localhost:8080/solr/fp")
 _hexpoch = int(time.time() * 1000)
 logger = logging.getLogger(__name__)
 _tyrant_address = ['localhost', 1978]
@@ -162,7 +162,7 @@ def best_match_for_query(code_string, elbow=10, local=False):
     # Query the FP flat directly.
     response = query_fp(code_string, rows=30, local=local, get_data=True)
     logger.debug("solr qtime is %d" % (response.header["QTime"]))
-    
+
     if len(response.results) == 0:
         return Response(Response.NO_RESULTS, qtime=response.header["QTime"], tic=tic)
 
@@ -603,7 +603,7 @@ def query_fp(code_string, rows=15, local=False, get_data=False):
         else:
             fields = "track_id"
         with solr.pooled_connection(_fp_solr) as host:
-            resp = host.query(code_string, qt="/hashq", rows=rows, fields=fields)
+            resp = host.query(code_string, rows=rows, fields=fields)
         return resp
     except solr.SolrException:
         return None
